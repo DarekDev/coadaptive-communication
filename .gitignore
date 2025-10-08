@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+
+# Results and outputs
+*.pkl
+*.json
+sweep_results*
+hyperparam_search_results*
+retro_comm_figs*.png
+figure2_signal_space_placeholder.png
+generate_figure2.py
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep only final figures
+!figure1_accuracy_curves.png
+!figure2_signal_space.png
+
