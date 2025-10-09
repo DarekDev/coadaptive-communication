@@ -103,3 +103,4 @@ console.print(f"\n[bold green]✓ Figure 2 saved to figure2_signal_space.png[/]"
 print("\nNote: Signal positions are idealized (typical learned structure).")
 print("Each cluster represents one of the 10 contexts with Gaussian noise added.")
 
+

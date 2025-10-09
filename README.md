@@ -34,6 +34,7 @@ After running experiments:
 ```bash
 python make_figures.py        # Generate Figure 1 (learning curves)
 python make_figure2_simple.py # Generate Figure 2 (signal space)
+python analyze_specialization.py # Generate Figure 3 (weight specialization)
 ```
 
 ## Key Parameters
@@ -64,13 +65,15 @@ The main experiment demonstrates:
 
 ```
 Experiment/
-├── experiment.py              # Main simulation code
-├── make_figures.py            # Generate Figure 1
-├── make_figure2_simple.py     # Generate Figure 2
-├── hyperparam_search.py       # Hyperparameter optimization (optional)
-├── requirements.txt           # Python dependencies
-├── figure1_accuracy_curves.png
-├── figure2_signal_space.png
+├── experiment.py                      # Main simulation code
+├── make_figures.py                    # Generate Figure 1
+├── make_figure2_simple.py             # Generate Figure 2
+├── analyze_specialization.py          # Generate Figure 3 (run after sweep)
+├── hyperparam_search.py               # Hyperparameter optimization (optional)
+├── requirements.txt                   # Python dependencies
+├── figure1_accuracy_curves.png        # Figure 1: Learning curves
+├── figure2_signal_space.png           # Figure 2: Emergent signal clusters
+├── figure3_specialization_heatmaps.png # Figure 3: Weight divergence
 └── README.md
 ```
 

@@ -14,6 +14,8 @@ hyperparam_search_results*
 retro_comm_figs*.png
 figure2_signal_space_placeholder.png
 generate_figure2.py
+dimensionality_test_results.pkl
+test_dimensionality.py
 
 # Jupyter
 .ipynb_checkpoints/
@@ -32,4 +34,6 @@ Thumbs.db
 # Keep only final figures
 !figure1_accuracy_curves.png
 !figure2_signal_space.png
+!figure3_specialization_heatmaps.png
+!figureS1_dimensionality.png
 
