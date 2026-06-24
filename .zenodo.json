@@ -1,0 +1,11 @@
+{
+  "upload_type": "software",
+  "title": "Code for \"Within-Lifetime Coupling, Not Inherited Learning: Minimal Conditions for Emergent Coordination in Independent Agent Populations\"",
+  "description": "Simulation code for a minimal agent-based model in which two architecturally decoupled populations (producers and receivers), sharing no weights, gradients, or optimizer, evolve a shared signal-action code through local reward-based learning and selection. Includes the main experiment, the ODD-protocol model, and ablation harnesses for Lamarckian-vs-Baldwinian inheritance, the producer learning-rate asymmetry, and fitness-mode robustness.",
+  "creators": [
+    {"name": "Młodnicki, Dariusz", "orcid": "0009-0001-5634-393X", "affiliation": "Key Search"}
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": ["agent-based model", "emergent communication", "co-adaptation", "signalling games", "Lamarckian inheritance", "Baldwinian", "cultural evolution", "multi-agent systems"]
+}
