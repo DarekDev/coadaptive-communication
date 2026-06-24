@@ -1,6 +1,6 @@
 # Co-Adaptive Communication Evolution
 
-Code accompanying the paper: **"Co-adaptation of Signalling and Perception in Multi-Agent Systems: A Minimal Model"**
+Code accompanying the paper: **"Within-Lifetime Coupling, Not Inherited Learning: Minimal Conditions for Emergent Coordination in Independent Agent Populations"**
 
 ## Overview
 
@@ -77,11 +77,21 @@ Experiment/
 └── README.md
 ```
 
+## Ablation experiments (`ablation/`)
+
+Additional experiments supporting the paper, each self-contained (stdlib + numpy, fixed seeds):
+
+- **`baldwinian_ablation.py`** -- Lamarckian vs Baldwinian inheritance (Table 2). Adds a genotype/phenotype split to test whether inheriting *learned* weights is necessary; the Baldwinian arm resets the phenotype to the genotype each generation.
+- **`symmetric_rate_ablation.py`** -- symmetric vs asymmetric producer learning rule, crossed with both inheritance regimes (Table 3). Tests whether the producer's slower, success-only update is load-bearing for convergence (it is not).
+- **`full_ablation.py`** -- unified harness combining the above plus a fitness-mode option (sum vs mean reward), used for the fitness-robustness check reported in the paper.
+
+Each writes a `*_results.json` with per-condition accuracy (mean +/- 95% CI over seeds).
+
 ## Citation
 
 If you use this code, please cite the accompanying paper:
 
-*"Co-adaptation of Signalling and Perception in Multi-Agent Systems: A Minimal Model"*
+*"Within-Lifetime Coupling, Not Inherited Learning: Minimal Conditions for Emergent Coordination in Independent Agent Populations"*
 
 (Citation details will be added upon publication)
 

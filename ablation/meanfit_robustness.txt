@@ -1,0 +1,1 @@
+asym_lam meanfit (30 seeds): 0.909 +/- 0.023

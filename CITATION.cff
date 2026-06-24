@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying paper and this archived code."
+title: "Code for \"Within-Lifetime Coupling, Not Inherited Learning\""
+authors:
+  - family-names: "Młodnicki"
+    given-names: "Dariusz"
+    orcid: "https://orcid.org/0009-0001-5634-393X"
+    affiliation: "Key Search"
+license: MIT
+type: software
+repository-code: "https://github.com/DarekDev/coadaptive-communication"
+keywords:
+  - agent-based model
+  - emergent communication
+  - co-adaptation
+  - signalling games
