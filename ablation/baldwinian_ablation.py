@@ -81,7 +81,8 @@ def resample(pop, rng, mode):
 
 
 def run_seed(seed, mode, rounds_per_gen, generations=GENERATIONS, sigma=NOISE_SIGMA,
-             curve_every=25, curve_trials=200, final_trials=2000, observe=None):
+             curve_every=25, curve_trials=200, final_trials=2000, observe=None,
+             learning=True, evaluate_final=None):
     rng = np.random.default_rng(seed)
     producers, receivers = new_pop(rng), new_pop(rng)
     curve = []
@@ -103,21 +104,22 @@ def run_seed(seed, mode, rounds_per_gen, generations=GENERATIONS, sigma=NOISE_SI
             reward = 1 if guess == c else 0
             if observe is not None:
                 observe("training", gen + 1, trial, c, guess)
-            # receiver update (exact copy of update_receiver)
-            if guess == c:
+            if learning:
+                # Move the correct receiver row toward the signal and the wrong row away.
+                if guess != c:
+                    R["w"][guess] -= ETA * (s_noisy - R["w"][guess])
                 R["w"][c] += ETA * (s_noisy - R["w"][c])
-            else:
-                R["w"][guess] -= ETA * (s_noisy - R["w"][guess])
-                R["w"][c]     += ETA * (s_noisy - R["w"][c])
-            # producer update: success-only, slower (exact copy of update_producer call)
-            if reward == 1:
-                P["w"][c] += PRODUCER_ETA * (s_noisy - P["w"][c])
+                if reward == 1:
+                    P["w"][c] += PRODUCER_ETA * (s_noisy - P["w"][c])
             P["fit"] += reward
             R["fit"] += reward
         # accuracy measured on the LEARNED phenotypes, before selection (as in experiment.py)
         if gen == generations - 1:
-            last_acc = estimate_accuracy(producers, receivers, rng, sigma, trials=final_trials,
-                                         observe=observe, stage="final", generation=gen + 1)
+            if evaluate_final is None:
+                last_acc = estimate_accuracy(producers, receivers, rng, sigma, trials=final_trials,
+                                             observe=observe, stage="final", generation=gen + 1)
+            else:
+                last_acc = evaluate_final(producers, receivers)
         if gen % curve_every == 0:
             curve.append((gen, estimate_accuracy(producers, receivers, rng, sigma, trials=curve_trials,
                                                 observe=observe, stage="curve", generation=gen + 1)))

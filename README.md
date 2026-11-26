@@ -100,6 +100,18 @@ The replay uses original ablation seeds 0–29, 1,000 generations, 500 training 
 
 `coadaptive-final-telemetry.csv` contains 120,000 final decisions across both arms. Rows include the UTC observation timestamp, seed, generation, trial, arm, target, decoded context, and correctness. `replay-results.json` reports the final accuracy in each arm and the paired accuracy gain with a 95% t interval over the 30 seed-level gains. Wall-clock timestamps vary between runs.
 
+### Fresh-seed experiment with mechanism controls
+
+The [analysis plan](ablation/fresh-seed-run-plan.md) fixes seeds 1000–1029 and compares genotype-only inheritance with matched uniform guesses, learning without prior selection, selection with learning disabled, learned-weight inheritance, and a higher interaction budget. The standalone runner logs every final decision. The analyzer validates and assembles both trial CSVs and reports seed-level intervals and contrasts.
+
+```bash
+python -m pip install -r ablation/requirements-replay.txt
+OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python ablation/run_revision.py fresh-trials --workers 8
+python ablation/analyze_revision.py fresh-trials fresh-analysis
+```
+
+Use Python 3.14 and new output directories. `fresh-analysis` contains the primary 120,000-row telemetry CSV, the 240,000-row comparison CSV, the per-seed table, and a JSON summary that includes the CSV checksums. Wall-clock timestamps vary between runs.
+
 ## Citation
 
 If you use this code, please cite the accompanying paper:
