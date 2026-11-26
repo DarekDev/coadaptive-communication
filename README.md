@@ -87,6 +87,19 @@ Additional experiments supporting the paper, each self-contained (stdlib + numpy
 
 Each writes a `*_results.json` with per-condition accuracy (mean +/- 95% CI over seeds).
 
+### Reproduce the genotype-only result with trial telemetry
+
+Use Python 3.14 and the pinned replay dependency. Run from the repository root with a new output directory. The final argument is the number of worker processes. It can be omitted for serial execution.
+
+```bash
+python -m pip install -r ablation/requirements-replay.txt
+OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 python ablation/replay_coadaptive.py replay-logs 8
+```
+
+The replay uses original ablation seeds 0–29, 1,000 generations, 500 training interactions per generation, and channel noise `σ = 0.1`. It saves 30 compressed logs with every training, learning-curve, and final decoding event. Each seed has 2,000 final evaluation attempts. Each attempt is paired with an independently seeded uniform guess at the same target context.
+
+`coadaptive-final-telemetry.csv` contains 120,000 final decisions across both arms. Rows include the UTC observation timestamp, seed, generation, trial, arm, target, decoded context, and correctness. `replay-results.json` reports the final accuracy in each arm and the paired accuracy gain with a 95% t interval over the 30 seed-level gains. Wall-clock timestamps vary between runs.
+
 ## Citation
 
 If you use this code, please cite the accompanying paper:

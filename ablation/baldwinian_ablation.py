@@ -47,9 +47,9 @@ def new_pop(rng):
     return pop
 
 
-def estimate_accuracy(producers, receivers, rng, sigma, trials=1000):
+def estimate_accuracy(producers, receivers, rng, sigma, trials=1000, observe=None, stage=None, generation=None):
     hit = 0
-    for _ in range(trials):
+    for trial in range(1, trials + 1):
         P = producers[rng.integers(0, N)]
         R = receivers[rng.integers(0, N)]
         c = int(rng.integers(0, N_CONTEXTS))
@@ -57,6 +57,8 @@ def estimate_accuracy(producers, receivers, rng, sigma, trials=1000):
         s_noisy = s + rng.normal(0.0, sigma, size=SIGNAL_DIM) if sigma > 0 else s
         guess = int(np.argmax(R["w"] @ s_noisy))
         hit += (guess == c)
+        if observe is not None:
+            observe(stage, generation, trial, c, guess)
     return hit / trials
 
 
@@ -79,7 +81,7 @@ def resample(pop, rng, mode):
 
 
 def run_seed(seed, mode, rounds_per_gen, generations=GENERATIONS, sigma=NOISE_SIGMA,
-             curve_every=25, curve_trials=200, final_trials=2000):
+             curve_every=25, curve_trials=200, final_trials=2000, observe=None):
     rng = np.random.default_rng(seed)
     producers, receivers = new_pop(rng), new_pop(rng)
     curve = []
@@ -91,7 +93,7 @@ def run_seed(seed, mode, rounds_per_gen, generations=GENERATIONS, sigma=NOISE_SI
             for a in receivers: a["w"] = a["geno"].copy()
         for a in producers: a["fit"] = 0.0
         for a in receivers: a["fit"] = 0.0
-        for _ in range(rounds_per_gen):
+        for trial in range(1, rounds_per_gen + 1):
             P = producers[rng.integers(0, N)]
             R = receivers[rng.integers(0, N)]
             c = int(rng.integers(0, N_CONTEXTS))
@@ -99,6 +101,8 @@ def run_seed(seed, mode, rounds_per_gen, generations=GENERATIONS, sigma=NOISE_SI
             s_noisy = s + rng.normal(0.0, sigma, size=SIGNAL_DIM) if sigma > 0 else s
             guess = int(np.argmax(R["w"] @ s_noisy))
             reward = 1 if guess == c else 0
+            if observe is not None:
+                observe("training", gen + 1, trial, c, guess)
             # receiver update (exact copy of update_receiver)
             if guess == c:
                 R["w"][c] += ETA * (s_noisy - R["w"][c])
@@ -112,9 +116,11 @@ def run_seed(seed, mode, rounds_per_gen, generations=GENERATIONS, sigma=NOISE_SI
             R["fit"] += reward
         # accuracy measured on the LEARNED phenotypes, before selection (as in experiment.py)
         if gen == generations - 1:
-            last_acc = estimate_accuracy(producers, receivers, rng, sigma, trials=final_trials)
+            last_acc = estimate_accuracy(producers, receivers, rng, sigma, trials=final_trials,
+                                         observe=observe, stage="final", generation=gen + 1)
         if gen % curve_every == 0:
-            curve.append((gen, estimate_accuracy(producers, receivers, rng, sigma, trials=curve_trials)))
+            curve.append((gen, estimate_accuracy(producers, receivers, rng, sigma, trials=curve_trials,
+                                                observe=observe, stage="curve", generation=gen + 1)))
         producers = resample(producers, rng, mode)
         receivers = resample(receivers, rng, mode)
     return last_acc, curve
